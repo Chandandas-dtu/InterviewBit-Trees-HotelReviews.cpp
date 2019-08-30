@@ -1,0 +1,57 @@
+//https://www.interviewbit.com/problems/hotel-reviews/
+
+bool comp(pair<int, int> x, pair<int, int> y)
+{
+    if(x.first > y.first)
+        return true;
+    else if(x.first < y.first)
+        return false;
+    else
+    {
+        if(x.second < y.second)
+            return true;
+        else
+            return false;
+    }
+}
+vector<int> Solution::solve(string A, vector<string> &B) {
+    vector<int> v;
+    int n=B.size(), q=A.size(), count=0;
+    set<string> s;
+    string st="";
+    for(int i=0; i<=q; i++)
+    {
+        if(i==q || A[i]=='_'){
+            s.insert(st);
+            st="";
+        }
+        else
+            st=st+A[i];
+    }
+    vector<pair<int, int> > p;
+    for(int i=0; i<n; i++)
+    {
+        string st1 = B[i];
+        for(int j=0; j<=st1.size(); j++)
+        {
+            if(j==st1.size() || st1[j]=='_')
+            {
+                if(s.find(st)!=s.end())
+                {
+                    count++;
+                }
+                st="";
+            }
+            else
+                st+=st1[j];
+        }
+        p.push_back(make_pair(count, i));
+        count=0;
+    }
+    sort(p.begin(), p.end(), comp);
+    for(int i=0; i<p.size(); i++)
+    {
+        v.push_back(p[i].second);
+    }
+    return v;
+}
